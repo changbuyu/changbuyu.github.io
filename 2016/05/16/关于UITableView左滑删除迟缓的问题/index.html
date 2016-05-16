@@ -84,30 +84,18 @@
 
 
 
-<meta name="description" content="关于UITableView左滑删除迟缓的问题
-最近在写项目的时候遇到一个小问题,为了避免将来再踩坑,决定提笔记录下来
-
-1 问题场景及原因在项目总需要给一个页面的UITableViewCell添加滑动删除操作，当我写好了代码开始跑的时候，发现是这样的：
-根本划不动好嘛，当然偶尔还是可以成功一下的，于是开始找原因。经过一圈Google，发现是手势冲突的问题（果然还是太年轻，这个问题应该是很明显的）。">
+<meta name="description" content="最近在写项目的时候遇到一个小问题,为了避免将来再踩坑,决定提笔记录下来">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于UITableView左滑删除迟缓的问题">
 <meta property="og:url" content="http://yoursite.com/2016/05/16/关于UITableView左滑删除迟缓的问题/index.html">
 <meta property="og:site_name" content="大饿魔的博客">
-<meta property="og:description" content="关于UITableView左滑删除迟缓的问题
-最近在写项目的时候遇到一个小问题,为了避免将来再踩坑,决定提笔记录下来
-
-1 问题场景及原因在项目总需要给一个页面的UITableViewCell添加滑动删除操作，当我写好了代码开始跑的时候，发现是这样的：
-根本划不动好嘛，当然偶尔还是可以成功一下的，于是开始找原因。经过一圈Google，发现是手势冲突的问题（果然还是太年轻，这个问题应该是很明显的）。">
+<meta property="og:description" content="最近在写项目的时候遇到一个小问题,为了避免将来再踩坑,决定提笔记录下来">
 <meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/before2.gif">
 <meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/after.gif">
-<meta property="og:updated_time" content="2016-05-16T12:24:15.000Z">
+<meta property="og:updated_time" content="2016-05-16T13:54:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于UITableView左滑删除迟缓的问题">
-<meta name="twitter:description" content="关于UITableView左滑删除迟缓的问题
-最近在写项目的时候遇到一个小问题,为了避免将来再踩坑,决定提笔记录下来
-
-1 问题场景及原因在项目总需要给一个页面的UITableViewCell添加滑动删除操作，当我写好了代码开始跑的时候，发现是这样的：
-根本划不动好嘛，当然偶尔还是可以成功一下的，于是开始找原因。经过一圈Google，发现是手势冲突的问题（果然还是太年轻，这个问题应该是很明显的）。">
+<meta name="twitter:description" content="最近在写项目的时候遇到一个小问题,为了避免将来再踩坑,决定提笔记录下来">
 <meta name="twitter:image" content="http://o79nnt4gu.bkt.clouddn.com/before2.gif">
 
 
@@ -120,7 +108,7 @@
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: 6246307479660004000,
+      userId: 1618046870,
       author: '博主'
     }
   };
@@ -294,6 +282,13 @@
 
           
             
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/16/关于UITableView左滑删除迟缓的问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/16/关于UITableView左滑删除迟缓的问题/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -313,9 +308,10 @@
       
 
       
-        <h1 id="关于UITableView左滑删除迟缓的问题"><a href="#关于UITableView左滑删除迟缓的问题" class="headerlink" title="关于UITableView左滑删除迟缓的问题"></a>关于<em>UITableView</em>左滑删除迟缓的问题</h1><blockquote>
+        <blockquote>
 <p>最近在写项目的时候遇到一个小问题,为了避免将来再踩坑,决定提笔记录下来</p>
 </blockquote>
+<a id="more"></a>
 <h2 id="1-问题场景及原因"><a href="#1-问题场景及原因" class="headerlink" title="1 问题场景及原因"></a>1 问题场景及原因</h2><p>在项目总需要给一个页面的<em>UITableViewCell</em>添加滑动删除操作，当我写好了代码开始跑的时候，发现是这样的：<br><img src="http://o79nnt4gu.bkt.clouddn.com/before2.gif" alt="过滤手势之前"></p>
 <p>根本划不动好嘛，当然偶尔还是可以成功一下的，于是开始找原因。经过一圈<em>Google</em>，发现是手势冲突的问题（果然还是太年轻，这个问题应该是很明显的）。我在项目中引入了一个<em>MainNavController</em>，在添加全平滑动返回手势的时候添加了一个<em>Pan</em>手势。这个时候，<em>Pan</em>手势就会吃掉<em>Cell</em>的的左滑事件，导致<em>Cell</em>不能左滑，或者滑很多次才能成功一次。下面贴代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//之前只对控制器的是否要执行手势进行了判断，并没有对手势方向进行判断</span><br><span class="line">- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer&#123;</span><br><span class="line">    if (self.childViewControllers.count == 1) &#123;</span><br><span class="line">        return NO;</span><br><span class="line">    &#125;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2 解决方案"></a>2 解决方案</h2><p>既然找到原因了，那么就可以开始解决问题了。由于全屏滑动返回是右滑返回，只需要识别<em>Pan</em>手势右滑就好了，而<em>UITableViewCell</em>需要的是左滑手势，所以禁用掉<em>Pan</em>的左滑就可以解决问题了！那么怎么禁用左滑手势呢？可以利用<em>UIPanGestureRecognizer</em>的这个方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//当获的点的x&lt;0时即为左滑</span><br><span class="line">- (CGPoint)translationInView:(nullable UIView *)view;</span><br></pre></td></tr></table></figure></p>
@@ -366,6 +362,10 @@
 
           
   <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/16/关于UITableView左滑删除迟缓的问题/"
+           data-title="关于UITableView左滑删除迟缓的问题" data-url="http://yoursite.com/2016/05/16/关于UITableView左滑删除迟缓的问题/">
+      </div>
     
   </div>
 
@@ -475,9 +475,32 @@
 
   
 
+  
+    
+  
 
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"likeacoder"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
 
   
+    
+      
+      <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js"></script>
+    
+  
+
+
 
 
 
