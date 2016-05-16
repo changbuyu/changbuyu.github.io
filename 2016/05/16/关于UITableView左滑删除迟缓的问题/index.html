@@ -84,15 +84,31 @@
 
 
 
-<meta name="description" content="我真的是一只程序猿...">
-<meta property="og:type" content="website">
-<meta property="og:title" content="大饿魔的博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="关于UITableView左滑删除迟缓的问题
+最近在写项目的时候遇到一个小问题,为了避免将来再踩坑,决定提笔记录下来
+
+1 问题场景及原因在项目总需要给一个页面的UITableViewCell添加滑动删除操作，当我写好了代码开始跑的时候，发现是这样的：
+根本划不动好嘛，当然偶尔还是可以成功一下的，于是开始找原因。经过一圈Google，发现是手势冲突的问题（果然还是太年轻，这个问题应该是很明显的）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于UITableView左滑删除迟缓的问题">
+<meta property="og:url" content="http://yoursite.com/2016/05/16/关于UITableView左滑删除迟缓的问题/index.html">
 <meta property="og:site_name" content="大饿魔的博客">
-<meta property="og:description" content="我真的是一只程序猿...">
+<meta property="og:description" content="关于UITableView左滑删除迟缓的问题
+最近在写项目的时候遇到一个小问题,为了避免将来再踩坑,决定提笔记录下来
+
+1 问题场景及原因在项目总需要给一个页面的UITableViewCell添加滑动删除操作，当我写好了代码开始跑的时候，发现是这样的：
+根本划不动好嘛，当然偶尔还是可以成功一下的，于是开始找原因。经过一圈Google，发现是手势冲突的问题（果然还是太年轻，这个问题应该是很明显的）。">
+<meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/before2.gif">
+<meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/after.gif">
+<meta property="og:updated_time" content="2016-05-16T12:22:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="大饿魔的博客">
-<meta name="twitter:description" content="我真的是一只程序猿...">
+<meta name="twitter:title" content="关于UITableView左滑删除迟缓的问题">
+<meta name="twitter:description" content="关于UITableView左滑删除迟缓的问题
+最近在写项目的时候遇到一个小问题,为了避免将来再踩坑,决定提笔记录下来
+
+1 问题场景及原因在项目总需要给一个页面的UITableViewCell添加滑动删除操作，当我写好了代码开始跑的时候，发现是这样的：
+根本划不动好嘛，当然偶尔还是可以成功一下的，于是开始找原因。经过一圈Google，发现是手势冲突的问题（果然还是太年轻，这个问题应该是很明显的）。">
+<meta name="twitter:image" content="http://o79nnt4gu.bkt.clouddn.com/before2.gif">
 
 
 
@@ -110,7 +126,7 @@
   };
 </script>
 
-  <title> 大饿魔的博客 </title>
+  <title> 关于UITableView左滑删除迟缓的问题 | 大饿魔的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -129,9 +145,7 @@
   
   
 
-  <div class="container one-collumn  
-   page-home 
- ">
+  <div class="container one-collumn  page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -218,9 +232,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -240,10 +254,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/05/16/关于UITableView左滑删除迟缓的问题/" itemprop="url">
-                  关于UITableView左滑删除迟缓的问题
-                </a>
+                关于UITableView左滑删除迟缓的问题
               
             
           </h1>
@@ -302,9 +313,7 @@
       
 
       
-        
-          
-            <h1 id="关于UITableView左滑删除迟缓的问题"><a href="#关于UITableView左滑删除迟缓的问题" class="headerlink" title="关于UITableView左滑删除迟缓的问题"></a>关于<em>UITableView</em>左滑删除迟缓的问题</h1><blockquote>
+        <h1 id="关于UITableView左滑删除迟缓的问题"><a href="#关于UITableView左滑删除迟缓的问题" class="headerlink" title="关于UITableView左滑删除迟缓的问题"></a>关于<em>UITableView</em>左滑删除迟缓的问题</h1><blockquote>
 <p>最近在写项目的时候遇到一个小问题,为了避免将来再踩坑,决定提笔记录下来</p>
 </blockquote>
 <h2 id="1-问题场景及原因"><a href="#1-问题场景及原因" class="headerlink" title="1 问题场景及原因"></a>1 问题场景及原因</h2><p>在项目总需要给一个页面的<em>UITableViewCell</em>添加滑动删除操作，当我写好了代码开始跑的时候，发现是这样的：<br><img src="http://o79nnt4gu.bkt.clouddn.com/before2.gif" alt="过滤手势之前"></p>
@@ -317,16 +326,19 @@
 <p>开发中遇到的坑还是蛮多的，这是第一次提笔记录。决定提笔记录算是想着做个笔记，以后看一眼目录就知道踩过那些坑，可以不用再踩了，如果能帮到遇到同样问题的同学，那是再好不过了。</p>
 </blockquote>
 
-          
+      
+    </div>
+
+    <div>
+      
         
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
@@ -337,16 +349,15 @@
 
       
       
-        <div class="post-eof"></div>
-      
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -354,6 +365,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -446,6 +461,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
