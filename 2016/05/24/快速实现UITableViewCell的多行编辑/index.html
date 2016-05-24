@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="奇技淫巧," />
 
 
 
@@ -84,15 +84,23 @@
 
 
 
-<meta name="description" content="我真的是一只程序猿...">
-<meta property="og:type" content="website">
-<meta property="og:title" content="大饿魔的博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="项目想实现UITableViewCell同时可以编辑多行的效果，但我是一个懒人，于是找了一个投机取巧的办法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快速实现UITableViewCell的多行编辑">
+<meta property="og:url" content="http://yoursite.com/2016/05/24/快速实现UITableViewCell的多行编辑/index.html">
 <meta property="og:site_name" content="大饿魔的博客">
-<meta property="og:description" content="我真的是一只程序猿...">
+<meta property="og:description" content="项目想实现UITableViewCell同时可以编辑多行的效果，但我是一个懒人，于是找了一个投机取巧的办法。">
+<meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/erw2423done.gif">
+<meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/celldejiegou.png">
+<meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/weiyincang.gif">
+<meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/cengjijiegou21.png">
+<meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/yingcanghou.gif">
+<meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/bunengdian.gif">
+<meta property="og:updated_time" content="2016-05-24T03:24:35.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="大饿魔的博客">
-<meta name="twitter:description" content="我真的是一只程序猿...">
+<meta name="twitter:title" content="快速实现UITableViewCell的多行编辑">
+<meta name="twitter:description" content="项目想实现UITableViewCell同时可以编辑多行的效果，但我是一个懒人，于是找了一个投机取巧的办法。">
+<meta name="twitter:image" content="http://o79nnt4gu.bkt.clouddn.com/erw2423done.gif">
 
 
 
@@ -110,7 +118,7 @@
   };
 </script>
 
-  <title> 大饿魔的博客 </title>
+  <title> 快速实现UITableViewCell的多行编辑 | 大饿魔的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -131,9 +139,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-right 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -230,9 +236,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -252,10 +258,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/05/24/快速实现UITableViewCell的多行编辑/" itemprop="url">
-                  快速实现UITableViewCell的多行编辑
-                </a>
+                快速实现UITableViewCell的多行编辑
               
             
           </h1>
@@ -321,168 +324,75 @@
       
 
       
-        
-          <blockquote>
+        <blockquote>
 <p>项目想实现<em>UITableViewCell</em>同时可以编辑多行的效果，但我是一个懒人，于是找了一个投机取巧的办法。</p>
 </blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/24/快速实现UITableViewCell的多行编辑/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+<a id="more"></a>
+<h2 id="1-需求来源"><a href="#1-需求来源" class="headerlink" title="1. 需求来源"></a>1. 需求来源</h2><p>秉着对用户认真负责的态度（估计就我一个用户，咳咳），一个<em>UITableView</em>怎么能没有多选删除的功能，于是就想实现这样这个功能，也就是本文要实现的最终效果，如下图<br><img src="http://o79nnt4gu.bkt.clouddn.com/erw2423done.gif" alt="最终效果"></p>
+<h2 id="2-实现方法"><a href="#2-实现方法" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h2><p>最开始我的想法是给<em>cell</em>前面添加一个按钮，然后监听编辑按钮的点击来控制按钮的<em>frame</em>实现动画效果。但我是一个懒人，觉得这太麻烦了，想找一个投机取消的办法。于是我把目光投向了这个方法:<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)setEditing:(<span class="built_in">BOOL</span>)editing animated:(<span class="built_in">BOOL</span>)animated;</span><br></pre></td></tr></table></figure></p>
+<p>系统自带动画，这要是能用起来不省了很多事么。看到动画是从左往右，我默默的把<em>cell</em>的结构改成了这样：<br><img src="http://o79nnt4gu.bkt.clouddn.com/celldejiegou.png" alt="cell的层级结构"></p>
+<p>就是在<em>cell</em>的<em>contentView</em>上面添加了一个背景视图，背景视图超出<em>contentView</em>的范围，多出一段用来放按钮，其他的子视图也都添加到背景视图上就好。</p>
+<p>经过一番折腾，让我把代码跑起来！看能不能到达我想要的效果：<br><img src="http://o79nnt4gu.bkt.clouddn.com/weiyincang.gif" alt="隐藏之前"></p>
+<p>好！我们可以看到基本需求已经实现啦！那么下面只要隐藏掉系统自带的编辑视图就好，让我们来看看层级结构，看看这个减号到底是何方神圣：<br><img src="http://o79nnt4gu.bkt.clouddn.com/cengjijiegou21.png" alt="隐藏之后"></p>
+<p>通过视图我们可以清除的看到这个家伙是<em>UITableViewCellEditControl</em>，我们只需要将他隐藏即可。但是这个家伙好像并没有那么容易拿到。我也是做了一下尝试，没想到一击即中。在编辑模式下，遍历每一个<em>cell</em>，执行下面的代码，这里用到了一点点<em>runtime</em>的知识，需要倒入头文件<em>runtime.h</em>。<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)hiddenEditControl:(CBYCityWeatherCell *)cell&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">UIView</span> *view <span class="keyword">in</span> cell.subviews) &#123;</span><br><span class="line">        <span class="built_in">NSString</span> *name = [<span class="built_in">NSString</span> stringWithUTF8String:object_getClassName(view)] ;</span><br><span class="line">        <span class="keyword">if</span> ([name isEqualToString:<span class="string">@"UITableViewCellEditControl"</span>]) &#123;</span><br><span class="line">            view.hidden = <span class="literal">YES</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后再把代码跑起来！<br><img src="http://o79nnt4gu.bkt.clouddn.com/yingcanghou.gif" alt="隐藏之后"></p>
+<p>好了大功告成！让我们来点一下看看！<br><img src="http://o79nnt4gu.bkt.clouddn.com/bunengdian.gif" alt="并不能点"></p>
+<p>我真的点了！很用力的点了，但是并没有响应，很容易我们可以知道，我们的背景视图超出了<em>contentView</em>，所以点击按钮会没有响应，这就好说了，重写一下<em>hitTest: withEvent:</em>就ok了：<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">UIView</span> *)hitTest:(<span class="built_in">CGPoint</span>)point withEvent:(<span class="built_in">UIEvent</span> *)event&#123;</span><br><span class="line">    <span class="built_in">CGPoint</span> depoint = [<span class="keyword">self</span>.backgroundView convertPoint:point toView:<span class="keyword">self</span>.button];</span><br><span class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span>.button pointInside:depoint withEvent:event]) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.button;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> hitTest:point withEvent:event];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>至此，就真的大功告成了。图就不贴了，就是第一个图。</p>
+<h2 id="3-小结"><a href="#3-小结" class="headerlink" title="3. 小结"></a>3. 小结</h2><p>偷懒也能偷出新高度。</p>
+
+      
+    </div>
+
+    <div>
+      
         
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/16/关于UITableView左滑删除迟缓的问题/" itemprop="url">
-                  关于UITableView左滑删除迟缓的问题
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-16T00:00:14+08:00" content="2016-05-16">
-              2016-05-16
-            </time>
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/16/关于UITableView左滑删除迟缓的问题/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/16/关于UITableView左滑删除迟缓的问题/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
+            <a href="/tags/奇技淫巧/" rel="tag">#奇技淫巧</a>
           
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <blockquote>
-<p>最近在写项目的时候遇到一个小问题,为了避免将来再踩坑,决定提笔记录下来</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/16/关于UITableView左滑删除迟缓的问题/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/16/关于UITableView左滑删除迟缓的问题/" rel="next" title="关于UITableView左滑删除迟缓的问题">
+                <i class="fa fa-chevron-left"></i> 关于UITableView左滑删除迟缓的问题
+              </a>
+            
           </div>
-        
-      
-    </div>
 
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
 
       
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -490,6 +400,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/24/快速实现UITableViewCell的多行编辑/"
+           data-title="快速实现UITableViewCell的多行编辑" data-url="http://yoursite.com/2016/05/24/快速实现UITableViewCell的多行编辑/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -509,8 +427,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://o79nnt4gu.bkt.clouddn.com/avatar.jpg"
@@ -560,6 +487,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-需求来源"><span class="nav-number">1.</span> <span class="nav-text">1. 需求来源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-实现方法"><span class="nav-number">2.</span> <span class="nav-text">2. 实现方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-小结"><span class="nav-number">3.</span> <span class="nav-text">3. 小结</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -656,6 +594,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
