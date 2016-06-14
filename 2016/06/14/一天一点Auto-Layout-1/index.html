@@ -1,0 +1,664 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="学习笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="虽然平时在项目中经常会运用Auto Layout来布局界面，也使用过Masonry，但从来没有系统的学习过Auto Layout。最近决定重新开始学习，并将之前没有注意到的知识记录下来，以备后用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一天一点Auto Layout(1)">
+<meta property="og:url" content="http://yoursite.com/2016/06/14/一天一点Auto-Layout-1/index.html">
+<meta property="og:site_name" content="大饿魔的博客">
+<meta property="og:description" content="虽然平时在项目中经常会运用Auto Layout来布局界面，也使用过Masonry，但从来没有系统的学习过Auto Layout。最近决定重新开始学习，并将之前没有注意到的知识记录下来，以备后用。">
+<meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/autolayout1UIViewShowAlignmentRects.png">
+<meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/autolayout1_0%2C0%2C0%2C0.png">
+<meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/autolayout1_20%2C0%2C0%2C0.png">
+<meta property="og:updated_time" content="2016-06-14T16:09:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一天一点Auto Layout(1)">
+<meta name="twitter:description" content="虽然平时在项目中经常会运用Auto Layout来布局界面，也使用过Masonry，但从来没有系统的学习过Auto Layout。最近决定重新开始学习，并将之前没有注意到的知识记录下来，以备后用。">
+<meta name="twitter:image" content="http://o79nnt4gu.bkt.clouddn.com/autolayout1UIViewShowAlignmentRects.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 1618046870,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 一天一点Auto Layout(1) | 大饿魔的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">大饿魔的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                一天一点Auto Layout(1)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-14T21:01:13+08:00" content="2016-06-14">
+              2016-06-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/14/一天一点Auto-Layout-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/14/一天一点Auto-Layout-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>虽然平时在项目中经常会运用Auto Layout来布局界面，也使用过Masonry，但从来没有系统的学习过Auto Layout。最近决定重新开始学习，并将之前没有注意到的知识记录下来，以备后用。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="1-什么是Auto-Layout，它有什么好处？"><a href="#1-什么是Auto-Layout，它有什么好处？" class="headerlink" title="1. 什么是Auto Layout，它有什么好处？"></a>1. 什么是Auto Layout，它有什么好处？</h2><blockquote>
+<p>Auto Layout用的也不算少了，这部分简单带过。</p>
+</blockquote>
+<p>Auto Layout通常被理解作自动布局，它用来构建<em>view</em>之间的关系，指定<em>view</em>与其<em>superView</em>之间以及<em>view</em>与<em>view</em>之间的关系。在我看来，Auto Layout的有3大好处：</p>
+<ol>
+<li>Auto Layout可以根据内容来调整<em>view</em>的大小。</li>
+<li>Auto Layour可以方便的设定<em>view</em>布局规则的优先级。</li>
+<li>对于纯代码构建的Auto Layout来说，可以集中的检查和处理代码。</li>
+</ol>
+<h2 id="2-Auto-Layout的核心：约束-constraint"><a href="#2-Auto-Layout的核心：约束-constraint" class="headerlink" title="2. Auto Layout的核心：约束(constraint)"></a>2. Auto Layout的核心：约束(constraint)</h2><p>约束是用来描述<em>view</em>布局规则的，它限定了<em>view</em>之间的关联方式，并指出如何对他们进行布局。而Auto Layout就是利用约束来对<em>view</em>进行布局。在利用Auto Layout对视图进行布局的时候，只需要注意两点就可以保证不会出错了：</p>
+<ol>
+<li>过约束(约束冲突)。</li>
+<li>欠约束。</li>
+</ol>
+<p>一般来说，要确定一个<em>view</em>的布局，需要确定四个约束：视图在哪?(<em>origin</em>)，视图尺寸是多少?(<em>size</em>)。在我看来，其他的约束描述也只是在这四个约束的基础上变化而来。<br>首先来看看过约束的情况。一般而言，我们不会对一个视图有过约束的情况发生，但是涉及到多视图之间的关系，可能就会不小心引入过约束，例如下面这段代码(方便起见，利用<em>Masonry</em>做约束)：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">UIView</span> *first = [<span class="built_in">UIView</span> new];</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:first];</span><br><span class="line">    first.backgroundColor = [<span class="built_in">UIColor</span> redColor];</span><br><span class="line">    [first mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.left.and.top.equalTo(<span class="keyword">self</span>.view);</span><br><span class="line">        make.size.mas_equalTo(<span class="number">50</span>);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">UIView</span> *second = [<span class="built_in">UIView</span> new];</span><br><span class="line">    second.backgroundColor = [<span class="built_in">UIColor</span> grayColor];</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:second];</span><br><span class="line">    [second mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.left.and.right.and.top.and.bottom.equalTo(first);</span><br><span class="line">        make.width.mas_equalTo(<span class="number">30</span>);</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>咋一看没什么，当运行起来就会发现控制台报了这么一段错：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Unable to simultaneously satisfy constraints.</span><br><span class="line">(</span><br><span class="line">    <span class="string">"&lt;MASLayoutConstraint:0x7fc000c91330 UIView:0x7fc000d1b310.width == 50&gt;"</span>,</span><br><span class="line">    <span class="string">"&lt;MASLayoutConstraint:0x7fc000cd5c90 UIView:0x7fc000cd49f0.left == UIView:0x7fc000d1b310.left&gt;"</span>,</span><br><span class="line">    <span class="string">"&lt;MASLayoutConstraint:0x7fc000cd5f10 UIView:0x7fc000cd49f0.right == UIView:0x7fc000d1b310.right&gt;"</span>,</span><br><span class="line">    <span class="string">"&lt;MASLayoutConstraint:0x7fc000cd6660 UIView:0x7fc000cd49f0.width == 30&gt;"</span></span><br><span class="line">)</span><br><span class="line"><span class="comment">//在第一个约束中我们确定了第一个*view*的宽度是50，在第二个视图中，我们先让视图的左右贴紧第一个视图，实际上这时候，第二个视图的宽度已经确定了，但我们又给他添加了一个宽度约束，于是Xcode报错，不能同时满足这些约束。</span></span><br><span class="line"></span><br><span class="line">Will attempt to recover by breaking constraint </span><br><span class="line">&lt;MASLayoutConstraint:<span class="number">0x7fc000c91330</span> <span class="built_in">UIView</span>:<span class="number">0x7fc000d1b310</span>.width == <span class="number">50</span>&gt;</span><br><span class="line"><span class="comment">//由于过约束，xcode会帮助我们除掉一个约束来保证视图的布局。但我们看到，这里它把第一个视图的宽度约束打破了，这不一定是我们想要的结果，所以不要过约束。</span></span><br></pre></td></tr></table></figure></p>
+<p>但是如果非要利用上面的约束关系，也不是不可以，只要设定优先级就好，让Xcode知道约束冲突的时候，应该优先去满足哪个条件。自己创建的约束，默认优先级为1000。如若这个约束条件并非一定要满足，那么将其优先级降低即可：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[second mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.left.and.right.and.top.and.bottom.equalTo(first);</span><br><span class="line">        make.width.mas_equalTo(<span class="number">30</span>).with.priority(<span class="number">200</span>);</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure></p>
+<p>如此便可解决问题。当然，还有一个方法也可以解决，即利用约束属性<em>NSLayoutRelationLessThanOrEqual</em>或<em>NSLayoutRelationGreaterThanOrEqual</em>，事实上，约束属性一种有3中，还有一种即<em>NSLayoutRelationEqual</em>，这个属性在上面的代码中已有运用。所以，此代码还可以改成：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这里只能用*NSLayoutRelationGreaterThanOrEqual*，因为50大于30。</span></span><br><span class="line">[second mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.left.and.right.and.top.and.bottom.equalTo(first);</span><br><span class="line">        make.width.mas_greaterThanOrEqualTo(<span class="number">30</span>);</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure></p>
+<p>再来看看欠约束。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[second mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.left.and.right.and.top.equalTo(first);</span><br><span class="line">&#125;];</span><br><span class="line"><span class="comment">//这里比较容易看出，缺少一条约束，Xcode并不知道*second*的*bottom*在哪，也就是说不能确定视图的高度，所以无法显示出来。</span></span><br></pre></td></tr></table></figure></p>
+<p>欠约束比较简单，没什么好说的，但有种情况需要注意。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">second.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">40</span>, <span class="number">40</span>);</span><br><span class="line">[<span class="keyword">self</span>.view addSubview:second];</span><br><span class="line">[second mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.left.and.top.equalTo(first);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure></p>
+<p>此时<em>second</em>是无法在父视图上显示出来的。因为当你决定使用Auto Layout时， Xcode会将frame属性清除，因此此时实际上并没有设置视图的frame。记住<strong>Auto Layout不能与frame混合使用！(Auto Layout约束不可以用frame代替)</strong>。<br>最后还有一点要注意，在利用纯代码添加约束时，需要将<em>view</em>的<em>translatesAutoresizingMaskIntoConstraints</em>属性设置为NO，否则会于Auto Layout起冲突，可能导致视图丢失(Masonry内部进行了设置)。</p>
+<h2 id="3-对齐矩形-Alignment-Rectangles"><a href="#3-对齐矩形-Alignment-Rectangles" class="headerlink" title="3. 对齐矩形(Alignment Rectangles)"></a>3. 对齐矩形(Alignment Rectangles)</h2><p>之前对于Auto Layout的认识属于野路子，并不知道有这哥们的存在，这也是没有办法的事情，这哥们用的不多，且基本上大多数情况下就等于自身的<em>frame</em>。<br>Auto Layout是利用<em>Alignment Rectangles</em>而非<em>frame</em>来布局视图的。在大多数情况下，<em>Alignment Rectangles</em>与<em>frame</em>是相等的，所以我们看不出来区别。下面我们来研究一下这哥们。首先我们要打开Xcode的一个功能：可视化Alignment Rectangles。配置如下：<br><img src="http://o79nnt4gu.bkt.clouddn.com/autolayout1UIViewShowAlignmentRects.png" alt="UIViewShowAlignmentRects"><br>然后我们来运行这样一段代码：<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">//注意，这里返回的insets并不是image自身的，而是它的容器视图，这里即imageView，这点可以从后面的打印看出来。</span></span><br><span class="line">    <span class="built_in">UIImage</span> *image = [[<span class="built_in">UIImage</span> imageNamed:<span class="string">@"purple"</span>] imageWithAlignmentRectInsets:<span class="built_in">UIEdgeInsetsMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)];</span><br><span class="line">    <span class="built_in">UIImageView</span> *imageView = [[<span class="built_in">UIImageView</span> alloc] init];</span><br><span class="line">    imageView.image = image;</span><br><span class="line">    imageView.translatesAutoresizingMaskIntoConstraints = <span class="literal">NO</span>;</span><br><span class="line">    imageView.backgroundColor = [<span class="built_in">UIColor</span> clearColor];</span><br><span class="line">    <span class="keyword">self</span>.imageView = imageView;</span><br><span class="line">    [<span class="keyword">self</span>.view insertSubview:imageView atIndex:<span class="number">0</span>];</span><br><span class="line">    [<span class="keyword">self</span> autoLayoutCode];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidAppear:(<span class="built_in">BOOL</span>)animated&#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidAppear:animated];</span><br><span class="line">    <span class="built_in">CGRect</span> frame  = [_imageView alignmentRectForFrame:_imageView.frame];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, <span class="built_in">NSStringFromCGRect</span>(_imageView.frame));  <span class="comment">//&#123;&#123;80, 204&#125;, &#123;160, 160&#125;&#125;</span></span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, <span class="built_in">NSStringFromCGRect</span>(alignmentRect));  <span class="comment">//&#123;&#123;80, 204&#125;, &#123;160, 160&#125;&#125;</span></span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, <span class="built_in">NSStringFromUIEdgeInsets</span>(_imageView.alignmentRectInsets));  <span class="comment">//&#123;0, 0, 0, 0&#125;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)autoLayoutCode &#123;</span><br><span class="line"><span class="built_in">NSLayoutConstraint</span> *topCon = [<span class="built_in">NSLayoutConstraint</span> constraintWithItem:<span class="keyword">self</span>.imageView</span><br><span class="line">                                                          attribute:<span class="built_in">NSLayoutAttributeCenterX</span> </span><br><span class="line">                                                          relatedBy:<span class="built_in">NSLayoutRelationEqual</span> </span><br><span class="line">                                                             toItem:<span class="keyword">self</span>.view </span><br><span class="line">                                                          attribute:<span class="built_in">NSLayoutAttributeCenterX</span> </span><br><span class="line">                                                         multiplier:<span class="number">1</span> </span><br><span class="line">                                                           constant:<span class="number">0</span>] ;</span><br><span class="line">[<span class="keyword">self</span>.view addConstraint:topCon];</span><br><span class="line">    </span><br><span class="line"><span class="built_in">NSLayoutConstraint</span> *leftCon = [<span class="built_in">NSLayoutConstraint</span> constraintWithItem:<span class="keyword">self</span>.imageView </span><br><span class="line">                                                           attribute:<span class="built_in">NSLayoutAttributeCenterY</span> </span><br><span class="line">                                                           relatedBy:<span class="built_in">NSLayoutRelationEqual</span> </span><br><span class="line">                                                              toItem:<span class="keyword">self</span>.view </span><br><span class="line">                                                           attribute:<span class="built_in">NSLayoutAttributeCenterY</span> </span><br><span class="line">                                                          multiplier:<span class="number">1</span> </span><br><span class="line">                                                            constant:<span class="number">0</span>];</span><br><span class="line">[<span class="keyword">self</span>.view addConstraint:leftCon];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时运行效果为：<br><img src="http://o79nnt4gu.bkt.clouddn.com/autolayout1_0%2C0%2C0%2C0.png" alt="inset为0"><br>途中的黄线即为Xcode为我们准备的可视化<em>Alignment Rectangles</em>，有了它， 我们可以很清楚的看到<em>Alignment Rectangles</em>。此时<em>Insets</em>设置为(0,0,0,0),并没有什么特别之处，下面我们将<em>Insets</em>设置为(20,0,0,0)，看看会发生什么：<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="built_in">UIImage</span> *image = [[<span class="built_in">UIImage</span> imageNamed:<span class="string">@"purple"</span>] imageWithAlignmentRectInsets:<span class="built_in">UIEdgeInsetsMake</span>(<span class="number">20</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)];</span><br><span class="line">...</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, <span class="built_in">NSStringFromCGRect</span>(_imageView.frame));  <span class="comment">//&#123;&#123;80, 194&#125;, &#123;160, 160&#125;&#125;</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, <span class="built_in">NSStringFromCGRect</span>(alignmentRect));  <span class="comment">//&#123;&#123;80, 214&#125;, &#123;160, 140&#125;&#125;</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, <span class="built_in">NSStringFromUIEdgeInsets</span>(_imageView.alignmentRectInsets));  <span class="comment">//&#123;20, 0, 0, 0&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>效果图如下：<br><img src="http://o79nnt4gu.bkt.clouddn.com/autolayout1_20%2C0%2C0%2C0.png" alt="inset为(20,0,0,0)"></p>
+<p>通过控制台的打印以及截图，我们不难看出，Auto Layout是根据<em>Alignment Rectangles</em>来布局界面的。但是这个应用场景好像并不常见(我目前并没有应用过)。若有需要，只需要重写<em>view</em>的<em>alignmentRectInsets</em>方法即可快速确定<em>Alignment Rectangles</em>相对于<em>frame</em>的位置。</p>
+<p>好了，收工，今天到此为止！</p>
+<blockquote>
+<p>此为学习笔记，仅为个人理解，若有错误之处，烦请指正，请多包涵。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag">#学习笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/01/Javascript中的apply()、call()以及bind()/" rel="next" title="Javascript中的apply()、call()以及bind()">
+                <i class="fa fa-chevron-left"></i> Javascript中的apply()、call()以及bind()
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/14/一天一点Auto-Layout-1/"
+           data-title="一天一点Auto Layout(1)" data-url="http://yoursite.com/2016/06/14/一天一点Auto-Layout-1/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://o79nnt4gu.bkt.clouddn.com/avatar.jpg"
+               alt="大饿魔" />
+          <p class="site-author-name" itemprop="name">大饿魔</p>
+          <p class="site-description motion-element" itemprop="description">我真的是一只程序猿...</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-什么是Auto-Layout，它有什么好处？"><span class="nav-number">1.</span> <span class="nav-text">1. 什么是Auto Layout，它有什么好处？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Auto-Layout的核心：约束-constraint"><span class="nav-number">2.</span> <span class="nav-text">2. Auto Layout的核心：约束(constraint)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-对齐矩形-Alignment-Rectangles"><span class="nav-number">3.</span> <span class="nav-text">3. 对齐矩形(Alignment Rectangles)</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">大饿魔</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"likeacoder"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js"></script>
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
