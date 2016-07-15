@@ -1,0 +1,653 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="学习笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在开发总经常会遇到一个经典的错误unrecognized selector sent to instance,大家应该都知道这是由于找不到instance对应的方法而抛出的异常，那么在抛出异常之前经历了什么呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS之消息转发机制">
+<meta property="og:url" content="http://yoursite.com/2016/06/14/iOS之消息转发机制/index.html">
+<meta property="og:site_name" content="大饿魔的博客">
+<meta property="og:description" content="在开发总经常会遇到一个经典的错误unrecognized selector sent to instance,大家应该都知道这是由于找不到instance对应的方法而抛出的异常，那么在抛出异常之前经历了什么呢？">
+<meta property="og:image" content="http://o79nnt4gu.bkt.clouddn.com/message_forwarding.png">
+<meta property="og:updated_time" content="2016-07-15T14:18:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS之消息转发机制">
+<meta name="twitter:description" content="在开发总经常会遇到一个经典的错误unrecognized selector sent to instance,大家应该都知道这是由于找不到instance对应的方法而抛出的异常，那么在抛出异常之前经历了什么呢？">
+<meta name="twitter:image" content="http://o79nnt4gu.bkt.clouddn.com/message_forwarding.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 1618046870,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> iOS之消息转发机制 | 大饿魔的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">大饿魔的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS之消息转发机制
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-14T21:01:13+08:00" content="2016-06-14">
+              2016-06-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/14/iOS之消息转发机制/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/14/iOS之消息转发机制/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>在开发总经常会遇到一个经典的错误<em>unrecognized selector sent to instance</em>,大家应该都知道这是由于找不到<em>instance</em>对应的方法而抛出的异常，那么在抛出异常之前经历了什么呢？</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="1-什么是消息转发-Message-Forwarding"><a href="#1-什么是消息转发-Message-Forwarding" class="headerlink" title="1. 什么是消息转发(Message Forwarding)"></a>1. 什么是消息转发(Message Forwarding)</h2><blockquote>
+<p>当对象接收到无法解读的消息后，就会启动“消息转发(message forwarding)机制，程序员可以经有此过程告诉对象该如何处理未知消息。</p><p align="right">——《Effective Objective-C2.0》</p><p></p>
+</blockquote>
+<p>也就是说如果对象调用了自己不存在的方法或者只有声明没有实现的方法，就会进入消息转发机制，告诉对象该如何处理，在调用<em>doesNotRecognizeSelector:</em>方法抛出<em>unrecognized selector sent to instance</em>之前会依次调用下面三个方法，让你有机会挽救你的程序。</p>
+<h2 id="2-动态方法解析"><a href="#2-动态方法解析" class="headerlink" title="2. 动态方法解析"></a>2. 动态方法解析</h2><p>当对象接收到无法处理的方法后，会首先调用一个类方法<em>resolveInstanceMethod:</em>，利用这个方法我们就可以动态为对象添加方法了。废话少说，直接代码说话。首先做好准备工作，给ViewController声明一个方法<em>sayhi</em>，但不要实现。然后在<em>viewDidLoad</em>方法中调用<em>sayhi</em>。此时<em>sayhi</em>方法并没有实现，运行起来肯定会抛出<em>unrecognized selector sent to instance</em>异常。那么现在进行动态方法解析：<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">BOOL</span>)resolveInstanceMethod:(SEL)sel&#123;</span><br><span class="line">    <span class="built_in">NSString</span> *selStr = <span class="built_in">NSStringFromSelector</span>(sel);</span><br><span class="line">    <span class="keyword">if</span> ([selStr isEqualToString:<span class="string">@"sayhi"</span>]) &#123;</span><br><span class="line">        <span class="comment">/**</span><br><span class="line">        *  动态添加方法</span><br><span class="line">        *</span><br><span class="line">        *  @param self 需要添加方法的类</span><br><span class="line">        *  @param sel  需要添加的方法</span><br><span class="line">        *  @param IMP  方法的实现</span><br><span class="line">        *  @param types 方法的type Encodings，v代表返回值， 后面2位代表参数，@表示object，:表示selector。</span><br><span class="line">        *  进NSInvocation头文件可查看各个符号的含义。</span><br><span class="line">        *  @return 添加成功返回yes，添加失败(方法实现已存在会添加失败)返回no</span><br><span class="line">        */</span></span><br><span class="line">        class_addMethod(<span class="keyword">self</span>, sel, (IMP)autoSayhi, <span class="string">"v@:"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> resolveInstanceMethod:sel];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line">*  标准的IMP description</span><br><span class="line">*</span><br><span class="line">*  @param self</span><br><span class="line">*  @param _cmd</span><br><span class="line">*  如果有其他参数可以再_cmd后追加，注意更改type Encodings，比如追加一个NSString类型的参数，type Encodings表示为“v@:*”</span><br><span class="line">*/</span></span><br><span class="line"><span class="keyword">void</span> autoSayhi(<span class="keyword">id</span> <span class="keyword">self</span>, SEL _cmd)&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"吃饭了吗?"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时再将代码跑起来，会在控制台看到打印<code>“吃饭了吗？”</code>,通过这两个方法我们就可以在程序运行过程中动态为类添加方法了。</p>
+<h2 id="3-后备接受者"><a href="#3-后备接受者" class="headerlink" title="3. 后备接受者"></a>3. 后备接受者</h2><p>如果不想这么麻烦，能不能直接另一个实现了这个方法的对象来直接调用这个方法呢？答案是可以的，如果对象在接收到无法解析的方法后，你没有实现上面两个方法，那么对象就会调用<em>forwardingTargetForSelector:</em>方法，这个方法返回的对象就是你想要使用哪个对象来执行<em>sayhi</em>方法了。我们来创建一个<em>Person</em>类，实现一下<em>sayhi</em>方法。然后：<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)aSelector&#123;</span><br><span class="line"><span class="built_in">NSString</span> *selStr = <span class="built_in">NSStringFromSelector</span>(aSelector);</span><br><span class="line">    <span class="keyword">if</span> ([selStr isEqualToString:<span class="string">@"sayhi"</span>]) &#123;</span><br><span class="line">        <span class="keyword">return</span> [[Person alloc] init];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> forwardingTargetForSelector:aSelector];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时将代码跑起来，也会在控制台看到打印<code>“吃饭了吗？”</code>。</p>
+<h2 id="4-完整的消息转发"><a href="#4-完整的消息转发" class="headerlink" title="4. 完整的消息转发"></a>4. 完整的消息转发</h2><p>如果你前面两个步骤都没有执行，那么在程序抛出异常前你还有最后一次机会来挽救你的程序。首先要生成方法签名，然后调用<em>forwardInvovation:</em>来转发消息。在这一步中，你可以只改变调用对象：<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector&#123;</span><br><span class="line"><span class="comment">//拿到Person的sayhi方法，获取签名</span></span><br><span class="line">    <span class="built_in">NSMethodSignature</span> *signature = [Person instanceMethodSignatureForSelector:<span class="keyword">@selector</span>(sayhi)];</span><br><span class="line">    <span class="keyword">return</span> signature;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)invocation&#123;</span><br><span class="line">    <span class="comment">// 更换调用目标后,要更改invocation的target(即方法拥有者的实例)</span></span><br><span class="line">    [invocation invokeWithTarget:[[Person alloc] init]];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这两个方法缺一不可，但上面处理方式的结果与后备接收者无异，所以没有什么意义。我们可以再方法触发前，改变消息内容，比如更换方法，追加参数等。<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector&#123;</span><br><span class="line">    <span class="comment">//生成方法签名</span></span><br><span class="line">    <span class="built_in">NSMethodSignature</span> *signature = [ViewController instanceMethodSignatureForSelector:<span class="keyword">@selector</span>(sayno:)];</span><br><span class="line">    <span class="keyword">return</span> signature;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)invocation&#123;</span><br><span class="line">    <span class="comment">//更换SEL后要更改invocaiton的selector</span></span><br><span class="line">    invocation.selector = <span class="keyword">@selector</span>(sayno:);</span><br><span class="line">    <span class="built_in">NSString</span> *name = <span class="string">@"张三"</span>;</span><br><span class="line">    <span class="comment">//默认参数：self，_cmd,所以是从2开始，如果原方法有name参数，那么此时会覆盖。</span></span><br><span class="line">    [invocation setArgument:&amp;name atIndex:<span class="number">2</span>];</span><br><span class="line">    [invocation invoke];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)sayno:(<span class="built_in">NSString</span> *)name&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@:还没吃呢!"</span>, name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时，我们会在控制台看到打印<code>&quot;张三:还没吃呢!&quot;</code>。这里我们不仅更换了方法，还追加了一个参数，所以还是很强大的。</p>
+<h2 id="5-抛出异常"><a href="#5-抛出异常" class="headerlink" title="5. 抛出异常"></a>5. 抛出异常</h2><p>如果前面三个步骤都没有实现，那么程序就会来到<em>NSObject</em>的<em>doesNotRecognizeSelector:</em>方法，并抛出<em>unrecognized selector sent to instance</em>异常，程序崩溃。经过上面的步骤，那么再看下面这张图应该就很容易明白了。<br><img src="http://o79nnt4gu.bkt.clouddn.com/message_forwarding.png" alt="消息转发全流程"><br>接收者在每一步都可以处理消息，但最好再第一步就处理完，因为步骤越往后，代价越大。</p>
+<hr>
+<p>Github:<a href="https://github.com/changbuyu/message_forwarding" target="_blank" rel="external">Demooooooo</a></p>
+<blockquote>
+<p>此为学习笔记，仅为个人理解，若有错误之处，烦请指正，请多包涵。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag">#学习笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/01/Javascript中的apply()、call()以及bind()/" rel="next" title="Javascript中的apply()、call()以及bind()">
+                <i class="fa fa-chevron-left"></i> Javascript中的apply()、call()以及bind()
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/15/一天一点Auto-Layout-1/" rel="prev" title="一天一点Auto Layout(1)">
+                一天一点Auto Layout(1) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/14/iOS之消息转发机制/"
+           data-title="iOS之消息转发机制" data-url="http://yoursite.com/2016/06/14/iOS之消息转发机制/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://o79nnt4gu.bkt.clouddn.com/avatar.jpg"
+               alt="大饿魔" />
+          <p class="site-author-name" itemprop="name">大饿魔</p>
+          <p class="site-description motion-element" itemprop="description">我真的是一只程序猿...</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-什么是消息转发-Message-Forwarding"><span class="nav-number">1.</span> <span class="nav-text">1. 什么是消息转发(Message Forwarding)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-动态方法解析"><span class="nav-number">2.</span> <span class="nav-text">2. 动态方法解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-后备接受者"><span class="nav-number">3.</span> <span class="nav-text">3. 后备接受者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-完整的消息转发"><span class="nav-number">4.</span> <span class="nav-text">4. 完整的消息转发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-抛出异常"><span class="nav-number">5.</span> <span class="nav-text">5. 抛出异常</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">大饿魔</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"likeacoder"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js"></script>
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
